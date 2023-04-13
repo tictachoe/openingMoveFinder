@@ -23,8 +23,8 @@ fn main() -> Result<(), Error> {
     }
     
     // joining the args to create the move input
-    let move_input = &args[1..].join(" ");
-    println!("Searching for openings that start with: {}", move_input);
+    let search_input = &args[1..].join(" ");
+    println!("Searching for openings that start with: {}", search_input);
 
     // opening the json file with the openings
     let file = File::open("eco.json")?;
@@ -34,7 +34,8 @@ fn main() -> Result<(), Error> {
 
     // Filter openings by input provided
     let matching_openings: Vec<&Opening> = openings.iter().filter(|opening|{
-        opening.moves.starts_with(move_input)
+        opening.name.to_lowercase().contains(&search_input.to_lowercase()) ||
+        opening.moves.starts_with(search_input)
     }).collect();
 
     // print message if no openings found
